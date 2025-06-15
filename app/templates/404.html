@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-5 text-center">
+    <h1>404 - {{ 'Страницата не е намерена' if session.get('lang') != 'en' else 'Page Not Found' }}</h1>
+    <p class="lead">
+      {{ 'Упс! Нещо се обърка. Страницата, която търсите, не съществува.'
+         if session.get('lang') != 'en'
+         else "Oops! Something went wrong. The page you're looking for doesn't exist." }}
+    </p>
+    <a href="{{ url_for('main.image_index') }}" class="btn btn-outline-primary">
+      {{ 'Обратно към началната страница' if session.get('lang') != 'en' else 'Back to Home Page' }}
+    </a>
+  </div>
+{% endblock %}
