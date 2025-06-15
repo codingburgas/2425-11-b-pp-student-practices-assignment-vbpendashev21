@@ -1,17 +1,23 @@
-# 🗓 Sprint Log — Week 1
+#🗓 Спринт Лог — Седмица 1
+## 🥅 Цели:
+- Създаване на основа на Flask приложението
 
-## 🥅 Goals:
-- Set up the Flask app skeleton
-- Implement user authentication
-- Build basic rule-based outfit prediction logic
-- Start multilingual support (BG/EN toggle)
+- Имплементиране на потребителска автентикация
 
-## ✅ Completed:
-- `User`, `Prediction`, `Survey`, `Feedback` models created
-- Login, logout, and registration fully working
-- Initial prediction system using temperature + condition rules
-- Dynamic label translation via `session['lang']`
+- Изграждане на базова логика за прогноза на облекло чрез правила
 
-## ⚠️ Challenges:
-- Getting consistent session-based translations across routes
-- Building form validation with multilingual feedback
+- Стартиране на поддръжка на многоезичност (превключване BG/EN)
+
+## ✅ Изпълнено:
+- Създадени модели: User, Prediction, Survey, Feedback
+
+- Вход, изход и регистрация работят напълно
+
+- Начална система за прогноза чрез температура + метео условия
+
+- Динамичен превод на етикети чрез session['lang']
+
+## ⚠️ Предизвикателства:
+- Осигуряване на последователни преводи на база сесия във всички маршрути
+
+- Изграждане на валидация на формите с многоезични съобщения
