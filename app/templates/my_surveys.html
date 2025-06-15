@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Моите анкети' if session.get('lang') != 'en' else 'My Surveys' }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>📋 {{ 'Моите анкетни отговори' if session.get('lang') != 'en' else 'My Survey Responses' }}</h2>
+  <p class="text-muted">{{ 'Анкетите са изключени от приложението.' if session.get('lang') != 'en' else 'Surveys are currently disabled in the app.' }}</p>
+
+  <hr>
+  <h3>📈 {{ 'Графика на температурите' if session.get('lang') != 'en' else 'Temperature Chart' }}</h3>
+  {% if surveys %}
+    <img src="{{ url_for('main.my_surveys_plot') }}" alt="Графика" class="img-fluid">
+  {% else %}
+    <div class="alert alert-warning">{{ 'Анкетни данни не са налични — графика не може да бъде показана.' if session.get('lang') != 'en' else 'Survey data not available — chart cannot be displayed.' }}</div>
+  {% endif %}
+</div>
+{% endblock %}
