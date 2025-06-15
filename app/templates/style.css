@@ -1,0 +1,11 @@
+body.sunny {
+  background: linear-gradient(to bottom, #ffe680, #fffbe6);
+}
+body.rain {
+  background: #a1c4fd;
+  background-image: url('/static/rain-overlay.gif');
+}
+body.snow {
+  background: #e0f7fa;
+  background-image: url('/static/snow-overlay.gif');
+}
