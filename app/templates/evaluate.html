@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Оцени AI' if session.get('lang') != 'en' else 'Evaluate AI' }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card p-4 shadow-sm">
+    <h2 class="text-center mb-4">🤖 {{ 'Оценка на модела' if session.get('lang') != 'en' else 'Model Evaluation' }}</h2>
+
+    <div class="text-center">
+      <p class="fs-5">
+        ✅ {{ 'Точност' if session.get('lang') != 'en' else 'Accuracy' }}: <strong>{{ accuracy | round(2) }}</strong><br>
+        ❌ {{ 'Загуба' if session.get('lang') != 'en' else 'Loss' }}: <strong>{{ loss | round(2) }}</strong>
+      </p>
+      <p class="text-muted">
+        {{ 'Изчислено на база на потребителски анкети.' if session.get('lang') != 'en' else 'Calculated from user survey records.' }}
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
