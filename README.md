@@ -1,63 +1,63 @@
 
-# 👕 Weather Outfit AI
+# 👕 Прогноза за облекло AI
 
-A Flask web app that suggests what to wear based on current temperature and weather conditions. Users get dynamic outfit predictions, can rate the suggestions, and admins can manage all predictions and feedback.
-
----
-
-## 🌟 Features
-
-- 🔐 User authentication: register, login, logout
-- 🌦 Outfit predictions based on:
-  - Temperature (°C)
-  - Conditions: ☀️ Sunny, 🌧️ Rainy, ❄️ Snowy
-- 🧠 Two AI modes:
-  - Rule-based outfit logic
-  - Learning-based model using feedback
-- ✨ Feedback system:
-  - 5-star rating
-  - Optional comment field
-- 🗂 User features:
-  - View prediction history
-  - Multilingual UI: Bulgarian 🇧🇬 and English 🇬🇧
-- 👑 Admin dashboard:
-  - View all predictions
-  - Filter by user or condition
-  - Delete users
-  - Export predictions to CSV
+Flask уеб приложение, което предлага какво да облечеш според текущата температура и метеорологични условия. Потребителите получават динамични препоръки, могат да оценяват предложенията и администраторите управляват всички прогнози и отзиви.
 
 ---
 
-## 🛠 Tech Stack
+## 🌟 Функции
+
+- 🔐 Потребителски акаунти: регистрация, вход, изход
+- 🌦 Прогноза за облекло според:
+  - Температура (°C)
+  - Условия: ☀️ Слънчево, 🌧️ Дъжд, ❄️ Сняг
+- 🧠 Два режима на AI:
+  - Логика с правила
+  - Модел с обучение на база обратна връзка
+- ✨ Обратна връзка:
+  - Оценка с 5 звезди
+  - Поле за коментар
+- 🗂 Функции за потребители:
+  - История на прогнозите
+  - Многоезичен интерфейс: български 🇧🇬 и английски 🇬🇧
+- 👑 Админ панел:
+  - Всички прогнози
+  - Филтриране по потребител или условие
+  - Изтриване на потребители
+  - Експорт в CSV
+
+---
+
+## 🛠 Технологии
 
 - **Python 3.12**
 - **Flask** (+ Blueprints)
 - **Flask-Login**, **Flask-WTF**, **Flask-SQLAlchemy**
-- **SQLite** database
-- **Bootstrap 5** frontend
-- **Pytest** for testing
+- **SQLite** база данни
+- **Bootstrap 5** за интерфейс
+- **Pytest** за тестване
 
 ---
 
-## 📦 Installation
+## 📦 Инсталация
 
-### 1. Clone the Repository
+### 1. Клониране на хранилището
 
 ```bash
 git clone https://github.com/your-username/weather_outfit_app.git
 cd weather_outfit_app
 ```
 
-### 2. Create and Activate Virtual Environment
+### 2. Създаване и активиране на виртуална среда
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate        # macOS/Linux
-# OR
+# или
 .venv\Scripts\activate         # Windows
 ```
 
-### 3. Install Dependencies
+### 3. Инсталиране на зависимости
 
 ```bash
 pip install -r requirements.txt
@@ -65,9 +65,9 @@ pip install -r requirements.txt
 
 ---
 
-## 🗃️ Setup the Database
+## 🗃️ Настройка на базата
 
-Inside a Python shell:
+В Python shell:
 
 ```bash
 flask shell
@@ -76,35 +76,35 @@ flask shell
 >>> exit()
 ```
 
-You can optionally insert an admin user manually if needed.
+По избор може да добавите админ ръчно.
 
 ---
 
-## ▶️ Running the App
+## ▶️ Стартиране
 
 ```bash
 flask run
 ```
 
-Then visit: [http://127.0.0.1:5000](http://127.0.0.1:5000)
+След това отворете: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ---
 
-## 🧪 Running Unit Tests
+## 🧪 Тестване
 
 ```bash
 pytest
 ```
 
-Tests include:
-- Login and access control
-- Outfit prediction
-- Feedback submission
-- Admin user deletion
+Покрити тестове:
+- Вход и достъп
+- AI прогноза
+- Изпращане на обратна връзка
+- Изтриване на потребител от админ
 
 ---
 
-## 📂 Project Structure
+## 📂 Структура на проекта
 
 ```
 weather_outfit_app/
@@ -129,26 +129,18 @@ weather_outfit_app/
 
 ---
 
-## 📚 Documentation
+## 📚 Документация
 
-See the [`docs/`](docs/) folder for:
-- 🧩 User stories
-- 🗓 Sprint logs (Week 1–2)
-- 🧠 Database diagram (PNG)
-- 💡 Future improvements
-
----
-
-## 👨‍🎓 Course & Assignment Info
-
-- **Course**: Web Programming (B Class)
-- **Assignment**: Weather-based Outfit Suggestion App
-- **University**: [Your School Name]
-- **Year**: 2025
-- **Author**: [Your Name]
+- 🧩 Потребителски истории
+- 🗓 Спринт логове
+- 🧠 Диаграма на базата (PNG)
+- 💡 Бъдещи подобрения
 
 ---
 
-## 📄 License
+## 👨‍🎓 Информация за курса
 
-This project is licensed for educational purposes only.
+- **Задание**: Weather-based Outfit Suggestion — Predict what to wear based on temperature and forecast
+- **Университет**: [ПГКПИ]
+- **Година**: 2025
+- **Автор**: [Валентин Пендашев]
