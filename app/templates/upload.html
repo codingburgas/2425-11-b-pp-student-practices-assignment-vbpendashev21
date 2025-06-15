@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}AI Outfit Detector{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card p-4 shadow">
+        <h2 class="mb-4 text-center">📸 {{ 'Upload a photo' if session.get('lang') == 'en' else 'Качи снимка' }}</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.image.label(class="form-label") }}
+                {{ form.image(class="form-control") }}
+            </div>
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+
+        {% if result %}
+            <div class="alert alert-success mt-4 animate__animated animate__fadeIn">
+                <h5>{{ 'Detected Clothing:' if session.get('lang') == 'en' else 'Разпознато облекло:' }}</h5>
+                <p>{{ result }}</p>
+            </div>
+            <img src="{{ image_url }}" class="img-fluid mt-3 rounded">
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
