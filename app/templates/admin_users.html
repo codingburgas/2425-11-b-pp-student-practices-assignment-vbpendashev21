@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Админ панел' if session.get('lang') != 'en' else 'Admin Panel' }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>👑 {{ 'Управление на потребители' if session.get('lang') != 'en' else 'User Management' }}</h2>
+
+  {% if users %}
+    <table class="table table-bordered table-hover mt-3">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>{{ 'Потребител' if session.get('lang') != 'en' else 'Username' }}</th>
+          <th>Email</th>
+          <th>{{ 'Роля' if session.get('lang') != 'en' else 'Role' }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ 'Админ' if user.role == 'admin' else 'Потребител' if session.get('lang') != 'en' else ('Admin' if user.role == 'admin' else 'User') }}</td>
+          <td>
+            {% if user.role != 'admin' %}
+              <form method="POST" action="{{ url_for('main.delete_user', user_id=user.id) }}">
+                <button class="btn btn-sm btn-danger" onclick="return confirm('{{ 'Сигурен ли си?' if session.get('lang') != 'en' else 'Are you sure?' }}')">
+                  {{ 'Изтрий' if session.get('lang') != 'en' else 'Delete' }}
+                </button>
+              </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-muted">{{ 'Няма потребители' if session.get('lang') != 'en' else 'No users available.' }}</p>
+  {% endif %}
+</div>
+{% endblock %}
