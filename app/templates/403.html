@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}403 - Забранен достъп{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+  <h1 class="display-3">🚫 403</h1>
+  <p class="lead">{{ 'Нямате достъп до тази страница' if session.get('lang') != 'en' else 'Access Denied' }}</p>
+  <p class="text-muted">{{ 'Нямате необходимите права за преглед на това съдържание.' if session.get('lang') != 'en' else 'You do not have the necessary permissions to view this content.' }}</p>
+  <a href="{{ url_for('main.image_index') }}" class="btn btn-warning mt-3">
+    {{ 'Обратно към началната' if session.get('lang') != 'en' else 'Go Back Home' }}
+  </a>
+</div>
+{% endblock %}
