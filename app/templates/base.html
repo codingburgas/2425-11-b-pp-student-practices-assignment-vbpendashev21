@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -7,44 +6,47 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
-        <a class="navbar-brand" href="{{ url_for('main.image_index') }}">Облекло AI</a>
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.image_index' %}fw-bold{% endif %}" href="{{ url_for('main.image_index') }}">{{ 'Начало' if session.get('lang') != 'en' else 'Home' }}</a></li>
-            {% if current_user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.my_surveys' %}fw-bold{% endif %}" href="{{ url_for('main.my_surveys') }}">{{ 'Моите анкети' if session.get('lang') != 'en' else 'My Surveys' }}</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.profile' %}fw-bold{% endif %}" href="{{ url_for('main.profile') }}">{{ 'Профил' if session.get('lang') != 'en' else 'Profile' }}</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.logout') }}">{{ 'Изход' if session.get('lang') != 'en' else 'Logout' }}</a></li>
-            {% else %}
-                <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.login' %}fw-bold{% endif %}" href="{{ url_for('main.login') }}">{{ 'Вход' if session.get('lang') != 'en' else 'Login' }}</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.register' %}fw-bold{% endif %}" href="{{ url_for('main.register') }}">{{ 'Регистрация' if session.get('lang') != 'en' else 'Register' }}</a></li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+    <a class="navbar-brand" href="{{ url_for('main.image_index') }}">Облекло AI</a>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.image_index' %}fw-bold{% endif %}" href="{{ url_for('main.image_index') }}">{{ 'Начало' if session.get('lang') != 'en' else 'Home' }}</a></li>
+        {% if current_user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.my_surveys' %}fw-bold{% endif %}" href="{{ url_for('main.my_surveys') }}">{{ 'Моите анкети' if session.get('lang') != 'en' else 'My Surveys' }}</a></li>
+            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.profile' %}fw-bold{% endif %}" href="{{ url_for('main.profile') }}">{{ 'Профил' if session.get('lang') != 'en' else 'Profile' }}</a></li>
+            {% if current_user.role == 'admin' %}
+            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.admin_users' %}fw-bold{% endif %}" href="{{ url_for('main.admin_users') }}">{{ 'Админ' if session.get('lang') != 'en' else 'Admin' }}</a></li>
             {% endif %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('main.logout') }}">{{ 'Изход' if session.get('lang') != 'en' else 'Logout' }}</a></li>
+        {% else %}
+            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.login' %}fw-bold{% endif %}" href="{{ url_for('main.login') }}">{{ 'Вход' if session.get('lang') != 'en' else 'Login' }}</a></li>
+            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.register' %}fw-bold{% endif %}" href="{{ url_for('main.register') }}">{{ 'Регистрация' if session.get('lang') != 'en' else 'Register' }}</a></li>
+        {% endif %}
+    </ul>
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            🌐 {{ 'Език' if session.get('lang') != 'en' else 'Language' }}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item {% if session.get('lang') == 'bg' %}fw-bold{% endif %}" href="{{ url_for('main.set_language', lang='bg') }}">🇧🇬 Български</a></li>
+            <li><a class="dropdown-item {% if session.get('lang') == 'en' %}fw-bold{% endif %}" href="{{ url_for('main.set_language', lang='en') }}">🇬🇧 English</a></li>
         </ul>
-        <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                🌐 {{ 'Език' if session.get('lang') != 'en' else 'Language' }}
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item {% if session.get('lang') == 'bg' %}fw-bold{% endif %}" href="{{ url_for('main.set_language', lang='bg') }}">🇧🇬 Български</a></li>
-                <li><a class="dropdown-item {% if session.get('lang') == 'en' %}fw-bold{% endif %}" href="{{ url_for('main.set_language', lang='en') }}">🇬🇧 English</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="container mt-3">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-
-        {% block content %}{% endblock %}
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</nav>
+
+<div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
