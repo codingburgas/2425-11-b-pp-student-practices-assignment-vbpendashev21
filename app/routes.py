@@ -236,3 +236,5 @@ def submit_feedback():
         flash("Благодарим за отзива!")
 
     return redirect(url_for("main.image_index"))
+
+
