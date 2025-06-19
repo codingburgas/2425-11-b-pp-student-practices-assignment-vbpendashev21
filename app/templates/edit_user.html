@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Редакция на потребител' if session.get('lang') != 'en' else 'Edit User' }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card p-4">
+    <h3>{{ 'Редакция на' if session.get('lang') != 'en' else 'Editing' }} {{ user.username }}</h3>
+    <form method="POST">
+      <div class="mb-3">
+        <label class="form-label">{{ 'Потребителско име' if session.get('lang') != 'en' else 'Username' }}</label>
+        {{ form.username(class="form-control") }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">{{ 'Нова парола (по избор)' if session.get('lang') != 'en' else 'New password (optional)' }}</label>
+        {{ form.password(class="form-control") }}
+      </div>
+      <div class="d-grid">
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
