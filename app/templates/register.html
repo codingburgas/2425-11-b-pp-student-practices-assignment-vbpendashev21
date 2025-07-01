@@ -43,8 +43,17 @@
             {% endif %}
           </div>
 
-          <div class="d-grid">
-            {{ form.submit(class="btn btn-primary") }}
+
+<div class="mb-3">
+  <label class="form-label">{{ 'Потвърди паролата' if session.get('lang') != 'en' else 'Confirm password' }}</label>
+  {{ form.confirm_password(class="form-control") }}
+  {% if form.confirm_password.errors %}
+    <div class="text-danger small">{{ form.confirm_password.errors[0] }}</div>
+  {% endif %}
+</div>
+
+<div class="d-grid">
+  {{ form.submit(class="btn btn-primary") }}
           </div>
         </form>
 
