@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ 'Публични прогнози' if session.get('lang') != 'en' else 'Public Predictions' }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">
+        {{ 'Публични прогнози' if session.get('lang') != 'en' else 'Public Predictions' }}
+    </h1>
+
+    {% if predictions %}
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <table class="table table-hover rounded-3 overflow-hidden shadow-sm bg-white">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>{{ 'Потребител' if session.get('lang') != 'en' else 'User' }}</th>
+                            <th>{{ 'Дата' if session.get('lang') != 'en' else 'Date' }}</th>
+                            <th>{{ 'Температура (°C)' if session.get('lang') != 'en' else 'Temperature (°C)' }}</th>
+                            <th>{{ 'Условия' if session.get('lang') != 'en' else 'Condition' }}</th>
+                            <th>{{ 'Облекло' if session.get('lang') != 'en' else 'Outfit' }}</th>
+                            <th>{{ 'Увереност' if session.get('lang') != 'en' else 'Confidence' }}</th>
+                            <th>{{ 'Описание' if session.get('lang') != 'en' else 'Description' }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prediction in predictions %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ prediction.user.username }}</td>
+                            <td>{{ prediction.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>{{ prediction.temperature }}</td>
+                            <td>
+                                {% if session.get('lang') == 'en' %}
+                                    {% if prediction.condition == 'sunny' %}Sunny ☀️
+                                    {% elif prediction.condition == 'rain' %}Rain 🌧️
+                                    {% elif prediction.condition == 'snow' %}Snow ❄️
+                                    {% else %}{{ prediction.condition }}{% endif %}
+                                {% else %}
+                                    {% if prediction.condition == 'sunny' %}Слънчево ☀️
+                                    {% elif prediction.condition == 'rain' %}Дъжд 🌧️
+                                    {% elif prediction.condition == 'snow' %}Сняг ❄️
+                                    {% else %}{{ prediction.condition }}{% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {# This is where you use the same translation dict as in routes.py if you want outfits translated too #}
+                                {% set outfits = {
+                                    "Shorts + T-shirt": "Къси панталони + Тениска",
+                                    "Pants + Shirt": "Панталон + Риза",
+                                    "Jacket + Jeans": "Яке + Дънки",
+                                    "Coat + Scarf": "Палто + Шал",
+                                    "Dress": "Рокля",
+                                    "Jacket + Hoodie": "Яке + Суитшърт",
+                                    "T-shirt + Jeans": "Тениска + Дънки",
+                                    "Sweater + Pants": "Пуловер + Панталон",
+                                    "Jacket": "Яке",
+                                    "Hoodie": "Суитшърт",
+                                    "T-shirt": "Тениска",
+                                    "Jeans": "Дънки",
+                                    "Shorts": "Къси панталони"
+                                } %}
+                                {% if session.get('lang') == 'bg' %}
+                                    {{ outfits[prediction.predicted_outfit] if prediction.predicted_outfit in outfits else prediction.predicted_outfit }}
+                                {% else %}
+                                    {{ prediction.predicted_outfit }}
+                                {% endif %}
+                            </td>
+                            <td>{{ prediction.confidence|round(2) }}</td>
+                            <td>{{ prediction.description }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-center mt-5 fs-5 text-secondary">
+            {{ 'Няма налични публични прогнози.' if session.get('lang') != 'en' else 'No public predictions available.' }}
+        </p>
+    {% endif %}
+</div>
+{% endblock %}
