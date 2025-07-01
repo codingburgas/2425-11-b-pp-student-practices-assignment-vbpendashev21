@@ -1,79 +1,82 @@
 {% extends "base.html" %}
-{% block title %}{{ 'Прогноза за облекло' if session.get('lang') != 'en' else 'Outfit Forecast' }}{% endblock %}
+{% block title %}{{ 'Прогноза за облекло' if session.get('lang', 'bg') == 'bg' else 'Outfit Forecast' }}{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <div class="card p-4 shadow mb-4">
-        <h2 class="text-center mb-4">
-          🧥 {{ 'Прогноза за облекло' if session.get('lang') != 'en' else 'Outfit Forecast' }}
+    <div class="col-lg-6 col-md-8">
+      <div class="card p-4 shadow-sm border-0 rounded-3">
+        <h2 class="text-center mb-4 fw-bold text-primary">
+          🧥 {{ 'Прогноза за облекло' if session.get('lang', 'bg') == 'bg' else 'Outfit Forecast' }}
         </h2>
 
-        <form method="POST" action="{{ url_for('main.predict_outfit') }}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ 'danger' if category == 'error' else category }} rounded-3">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
 
+        <form method="POST" action="{{ url_for('main.predict_outfit') }}" novalidate>
+          {{ form.hidden_tag() }}
 
           <div class="mb-3">
-            <label for="temperature" class="form-label">
-              {{ 'Температура (°C)' if session.get('lang') != 'en' else 'Temperature (°C)' }}
+            <label for="temperature" class="form-label fw-semibold">
+              {{ 'Температура (°C)' if session.get('lang', 'bg') == 'bg' else 'Temperature (°C)' }}
             </label>
-            <input type="number" step="0.1" name="temperature" id="temperature" class="form-control"
-                   value="{{ request.form.temperature or '' }}" required>
+            {{ form.temperature(class_='form-control', placeholder='25.0', autofocus=True) }}
+            {% if form.temperature.errors %}
+              <div class="text-danger small">{{ form.temperature.errors[0] }}</div>
+            {% endif %}
           </div>
 
           <div class="mb-3">
-            <label for="condition" class="form-label">
-              {{ 'Условия' if session.get('lang') != 'en' else 'Condition' }}
+            <label for="condition" class="form-label fw-semibold">
+              {{ 'Условия' if session.get('lang', 'bg') == 'bg' else 'Condition' }}
             </label>
-            <select name="condition" id="condition" class="form-select">
-              <option value="sunny" {% if request.form.condition == 'sunny' %}selected{% endif %}>
-                {{ 'Слънчево ☀️' if session.get('lang') != 'en' else 'Sunny ☀️' }}
-              </option>
-              <option value="rain" {% if request.form.condition == 'rain' %}selected{% endif %}>
-                {{ 'Дъжд 🌧️' if session.get('lang') != 'en' else 'Rain 🌧️' }}
-              </option>
-              <option value="snow" {% if request.form.condition == 'snow' %}selected{% endif %}>
-                {{ 'Сняг ❄️' if session.get('lang') != 'en' else 'Snow ❄️' }}
-              </option>
-            </select>
+            {{ form.condition(class_='form-select') }}
+            {% if form.condition.errors %}
+              <div class="text-danger small">{{ form.condition.errors[0] }}</div>
+            {% endif %}
           </div>
 
           <div class="mb-3">
-            <label for="ai_mode" class="form-label">
-              {{ 'AI режим' if session.get('lang') != 'en' else 'AI Mode' }}
+            <label for="description" class="form-label fw-semibold">
+              {{ 'Допълнително описание' if session.get('lang', 'bg') == 'bg' else 'Additional description' }}
             </label>
-            <select name="ai_mode" id="ai_mode" class="form-select">
-              <option value="simple">{{ 'Обикновен AI' if session.get('lang') != 'en' else 'Simple AI' }}</option>
-              <option value="advanced">{{ 'Обучен AI' if session.get('lang') != 'en' else 'Advanced AI' }}</option>
-            </select>
+            {{ form.description(class_='form-control', placeholder=('по желание' if session.get('lang', 'bg') == 'bg' else 'optional')) }}
+            {% if form.description.errors %}
+              <div class="text-danger small">{{ form.description.errors[0] }}</div>
+            {% endif %}
           </div>
 
-          <div class="mb-3">
-            <label for="description" class="form-label">
-              {{ 'Допълнително описание' if session.get('lang') != 'en' else 'Additional description' }}
+          <div class="form-check mb-4">
+            {{ form.is_public(class_='form-check-input') }}
+            <label class="form-check-label" for="is_public">
+              {{ 'Публична прогноза' if session.get('lang', 'bg') == 'bg' else 'Make prediction public' }}
             </label>
-            <input type="text" name="description" id="description" class="form-control"
-                   placeholder="{{ 'по желание' if session.get('lang') != 'en' else 'optional' }}">
           </div>
 
           <div class="d-grid">
-            <button type="submit" class="btn btn-primary">
-              {{ 'Предскажи облекло' if session.get('lang') != 'en' else 'Predict outfit' }}
+            <button type="submit" class="btn btn-primary btn-lg fw-semibold shadow-sm">
+              {{ 'Предскажи облекло' if session.get('lang', 'bg') == 'bg' else 'Predict outfit' }}
             </button>
           </div>
         </form>
 
         {% if outfit %}
-          <div class="alert alert-info mt-4 animate__animated animate__fadeIn">
-            <h5 class="text-center">🧾 {{ 'Резултат:' if session.get('lang') != 'en' else 'Result:' }}</h5>
-            <p class="fs-4 text-center">
-              <span style="font-size: 2em;">👕</span><br>
-              <strong>{{ outfit }}</strong><br>
-              <small class="text-muted">{{ 'Увереност' if session.get('lang') != 'en' else 'Confidence' }}: {{ confidence | round(2) }}</small>
-            </p>
-
-            {% if request.form.description %}
-              <p class="text-muted"><strong>{{ 'Описание' if session.get('lang') != 'en' else 'Description' }}:</strong> {{ request.form.description }}</p>
+          <div class="alert alert-success mt-4 rounded-3 text-center animate__animated animate__fadeIn">
+            <h5 class="mb-3 fw-bold">🧾 {{ 'Резултат:' if session.get('lang', 'bg') == 'bg' else 'Result:' }}</h5>
+            <div class="display-5">👕 <strong>{{ outfit }}</strong></div>
+            <div class="text-muted fs-5">
+              {{ 'Увереност' if session.get('lang', 'bg') == 'bg' else 'Confidence' }}: {{ confidence | round(2) }}
+            </div>
+            {% if form.description.data %}
+              <p class="mt-3 text-secondary fst-italic">
+                <strong>{{ 'Описание:' if session.get('lang', 'bg') == 'bg' else 'Description:' }}</strong>
+                {{ form.description.data }}
+              </p>
             {% endif %}
           </div>
         {% endif %}
