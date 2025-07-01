@@ -1,9 +1,13 @@
-from app import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer
 from flask import current_app
 from datetime import datetime
+
 
 class Prediction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,6 +19,11 @@ class Prediction(db.Model):
     confidence = db.Column(db.Float)
     feedback = db.Column(db.String(10))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    is_public = db.Column(db.Boolean, default=False)
+
+    # The relationship so you can do prediction.user in templates
+    user = db.relationship('User', backref=db.backref('predictions', lazy='dynamic'))
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,6 +50,7 @@ class User(db.Model, UserMixin):
         except Exception:
             return None
 
+
 class Survey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -48,8 +58,10 @@ class Survey(db.Model):
     condition = db.Column(db.String(64), nullable=False)
     outfit = db.Column(db.String(256), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    is_public = db.Column(db.Boolean, default=False)
 
     user = db.relationship('User', backref=db.backref('surveys', lazy='dynamic'))
+
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,3 +69,4 @@ class Feedback(db.Model):
     rating = db.Column(db.Integer)
     comment = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    is_public = db.Column(db.Boolean, default=False)
