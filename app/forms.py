@@ -1,25 +1,31 @@
+from flask import session
 from flask_wtf import FlaskForm
-from wtforms import FloatField, SelectField, SubmitField
-from wtforms.validators import DataRequired
-from wtforms import StringField, PasswordField, BooleanField
-from wtforms.validators import Email, Length, EqualTo
-from flask_wtf import FlaskForm
-from wtforms import SubmitField
+from wtforms import StringField, PasswordField, BooleanField, FloatField, SelectField, SubmitField
+from wtforms.validators import DataRequired, Email, Length, EqualTo, Optional
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 class PredictionForm(FlaskForm):
-    temperature = FloatField('Температура (°C)', validators=[DataRequired()])
-    condition = SelectField(
-        'Атмосферни условия',
-        choices=[
-            ('Слънчево ☀️', 'Слънчево ☀️'),
-            ('Облачно ☁️', 'Облачно ☁️'),
-            ('Дъждовно 🌧️', 'Дъждовно 🌧️'),
-            ('Снежно ❄️', 'Снежно ❄️'),
-        ],
-        validators=[DataRequired()]
-    )
-    submit = SubmitField('Прогнозирай облекло')
+    temperature = FloatField('Temperature', validators=[DataRequired()])
+    condition = SelectField('Condition', validators=[DataRequired()])
+    description = StringField('Description')
+    is_public = BooleanField('Make prediction public')
+    submit = SubmitField('Predict')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        lang = session.get('lang', 'bg')
+        if lang == 'bg':
+            self.condition.choices = [
+                ('sunny', 'Слънчево ☀️'),
+                ('rain', 'Дъжд 🌧️'),
+                ('snow', 'Сняг ❄️'),
+            ]
+        else:
+            self.condition.choices = [
+                ('sunny', 'Sunny ☀️'),
+                ('rain', 'Rain 🌧️'),
+                ('snow', 'Snow ❄️'),
+            ]
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -28,41 +34,22 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log In')
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Потребителско име', validators=[DataRequired()])
-    email = StringField('Имейл', validators=[DataRequired(), Email()])
-    password = PasswordField('Парола', validators=[DataRequired()])
-    confirm_password = PasswordField('Потвърди паролата', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Регистрация')
-
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[
+        DataRequired(), EqualTo('password')
+    ])
+    submit = SubmitField('Register')
 
 class EditProfileForm(FlaskForm):
-    username = StringField('Потребителско име', validators=[DataRequired(), Length(1, 64)])
-    password = PasswordField('Нова парола (по избор)')
-    submit = SubmitField('Запази промените')
-
-
+    username = StringField('Username', validators=[DataRequired(), Length(1, 64)])
+    password = PasswordField('New password (optional)')
+    submit = SubmitField('Save changes')
 
 class ImageUploadForm(FlaskForm):
-    image = FileField('Изображение', validators=[
+    image = FileField('Image', validators=[
         FileRequired(),
-        FileAllowed(['jpg', 'jpeg', 'png'], 'Само изображения!')
+        FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')
     ])
-    submit = SubmitField('Анализирай изображението')
-
-from flask_wtf import FlaskForm
-from wtforms import FloatField, SelectField, StringField, SubmitField
-from wtforms.validators import InputRequired
-
-class PredictionForm(FlaskForm):
-    temperature = FloatField('Temperature', validators=[InputRequired()])
-    condition = SelectField('Condition', choices=[
-        ('sunny', 'Sunny ☀️'),
-        ('rain', 'Rain 🌧️'),
-        ('snow', 'Snow ❄️')
-    ])
-    description = StringField('Description')
-    ai_mode = SelectField('AI Mode', choices=[
-        ('simple', 'Simple AI'),
-        ('advanced', 'Advanced AI')
-    ])
-    submit = SubmitField('Predict')
+    submit = SubmitField('Analyze image')
