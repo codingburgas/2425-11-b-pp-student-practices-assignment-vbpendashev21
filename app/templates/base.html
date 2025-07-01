@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html lang="{{ session.get('lang', 'bg') }}">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Weather Outfit{% endblock %}</title>
@@ -9,17 +9,50 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
     <a class="navbar-brand" href="{{ url_for('main.image_index') }}">Облекло AI</a>
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.image_index' %}fw-bold{% endif %}" href="{{ url_for('main.image_index') }}">{{ 'Начало' if session.get('lang') != 'en' else 'Home' }}</a></li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.image_index' %}fw-bold{% endif %}" href="{{ url_for('main.image_index') }}">
+                {{ 'Начало' if session.get('lang') != 'en' else 'Home' }}
+            </a>
+        </li>
         {% if current_user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.my_surveys' %}fw-bold{% endif %}" href="{{ url_for('main.my_surveys') }}">{{ 'Моите анкети' if session.get('lang') != 'en' else 'My Surveys' }}</a></li>
-            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.profile' %}fw-bold{% endif %}" href="{{ url_for('main.profile') }}">{{ 'Профил' if session.get('lang') != 'en' else 'Profile' }}</a></li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'main.public_predictions' %}fw-bold{% endif %}" href="{{ url_for('main.public_predictions') }}">
+                    {{ 'Публични прогнози' if session.get('lang') != 'en' else 'Public Predictions' }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'main.my_predictions' %}fw-bold{% endif %}" href="{{ url_for('main.my_predictions') }}">
+                    {{ 'Моите прогнози' if session.get('lang') != 'en' else 'My Predictions' }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'main.profile' %}fw-bold{% endif %}" href="{{ url_for('main.profile') }}">
+                    {{ 'Профил' if session.get('lang') != 'en' else 'Profile' }}
+                </a>
+            </li>
             {% if current_user.role == 'admin' %}
-            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.admin_users' %}fw-bold{% endif %}" href="{{ url_for('main.admin_users') }}">{{ 'Админ' if session.get('lang') != 'en' else 'Admin' }}</a></li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'main.admin_users' %}fw-bold{% endif %}" href="{{ url_for('main.admin_users') }}">
+                    {{ 'Админ' if session.get('lang') != 'en' else 'Admin' }}
+                </a>
+            </li>
             {% endif %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('main.logout') }}">{{ 'Изход' if session.get('lang') != 'en' else 'Logout' }}</a></li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.logout') }}">
+                    {{ 'Изход' if session.get('lang') != 'en' else 'Logout' }}
+                </a>
+            </li>
         {% else %}
-            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.login' %}fw-bold{% endif %}" href="{{ url_for('main.login') }}">{{ 'Вход' if session.get('lang') != 'en' else 'Login' }}</a></li>
-            <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.register' %}fw-bold{% endif %}" href="{{ url_for('main.register') }}">{{ 'Регистрация' if session.get('lang') != 'en' else 'Register' }}</a></li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'main.login' %}fw-bold{% endif %}" href="{{ url_for('main.login') }}">
+                    {{ 'Вход' if session.get('lang') != 'en' else 'Login' }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'main.register' %}fw-bold{% endif %}" href="{{ url_for('main.register') }}">
+                    {{ 'Регистрация' if session.get('lang') != 'en' else 'Register' }}
+                </a>
+            </li>
         {% endif %}
     </ul>
     <div class="dropdown">
@@ -27,10 +60,28 @@
             🌐 {{ 'Език' if session.get('lang') != 'en' else 'Language' }}
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item {% if session.get('lang') == 'bg' %}fw-bold{% endif %}" href="{{ url_for('main.set_language', lang='bg') }}">🇧🇬 Български</a></li>
-            <li><a class="dropdown-item {% if session.get('lang') == 'en' %}fw-bold{% endif %}" href="{{ url_for('main.set_language', lang='en') }}">🇬🇧 English</a></li>
+            {% if session.get('lang') == 'bg' %}
+                <li>
+                    <span class="dropdown-item fw-bold">🇧🇬 Български</span>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{{ url_for('main.set_language', lang='en') }}">
+                        🇬🇧 English
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a class="dropdown-item" href="{{ url_for('main.set_language', lang='bg') }}">
+                        🇧🇬 Български
+                    </a>
+                </li>
+                <li>
+                    <span class="dropdown-item fw-bold">🇬🇧 English</span>
+                </li>
+            {% endif %}
         </ul>
     </div>
+
 </nav>
 
 <div class="container mt-3">
