@@ -1,0 +1,11 @@
+temperature,condition,outfit,source,user,user_role,timestamp,description
+7.1,rain,Raincoat,survey,user1,admin,2025-06-30 10:54,
+-0.2,rain,Winter coat,survey,user2,user,2025-06-29 10:54,
+11.6,snow,Shorts + T-shirt,survey,user3,user,2025-06-28 10:54,
+8.2,sunny,Raincoat,prediction,user1,user,2025-06-27 10:54,Example desc 3
+0.1,snow,T-shirt + Jeans,survey,user2,user,2025-06-26 10:54,
+17.9,sunny,Winter coat,prediction,user3,admin,2025-06-25 10:54,Example desc 5
+6.2,rain,Shorts + T-shirt,prediction,user1,user,2025-06-24 10:54,Example desc 6
+11.6,rain,Shorts + T-shirt,survey,user2,user,2025-06-23 10:54,
+23.2,rain,T-shirt + Jeans,survey,user3,user,2025-06-22 10:54,
+8.7,rain,Winter coat,survey,user1,user,2025-06-21 10:54,
